@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Wget Codigos</title><style>body{background-color:#1e1e1e;color:#c9d1d9;font-family:Arial,sans-serif;margin:0;padding:0;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;overflow-y:auto}.container{width:90%;max-width:800px;text-align:center;padding:20px 0}.block{margin-bottom:20px;background-color:#252526;padding:15px;border:1px solid #3e3e42;border-radius:5px;overflow:hidden}.title{font-size:16px;font-weight:700;margin-bottom:10px;color:orange}textarea{width:100%;height:150px;background-color:#1e1e1e;color:#c9d1d9;border:1px solid #3e3e42;border-radius:5px;padding:10px;resize:none;font-size:14px;margin-bottom:10px;box-sizing:border-box;overflow-y:auto}textarea::-webkit-scrollbar{width:8px}textarea::-webkit-scrollbar-track{background:#1e1e1e}textarea::-webkit-scrollbar-thumb{background-color:#3e3e42;border-radius:5px}textarea::-webkit-scrollbar-thumb:hover{background-color:#575759}button{background-color:#376E37;color:#fff;border:none;padding:10px 20px;border-radius:5px;cursor:pointer;font-size:16px}button:hover{background-color:#2E572E}button:active{background-color:#244424}</style></head><body><div class="container"><h1>Wget codigos</h1><div class="block"><div class="title">Descarga básica desde URL</div><textarea readonly>@echo off
+
+wget -q --no-check-certificate --show-progress --connect-timeout=15 --tries=3 -O "name.ext" "URL?download=true"</textarea><button onclick="copyText(this)">Copiar</button></div><div class="block"><div class="title">Descarga y ejecución desde carpeta temporal</div><textarea readonly>@echo off
+
+wget -q --no-check-certificate --show-progress --connect-timeout=15 --tries=3 -O "%TEMP%\name.ext" "URL?download=true"
+start "" "%TEMP%\name.ext"</textarea><button onclick="copyText(this)">Copiar</button></div><div class="block"><div class="title">Crear carpeta, descargar y ejecutar</div><textarea readonly>@echo off
+:: Creación de Carpeta
+cd %USERPROFILE%\Downloads
+mkdir DescargasR
+cd %USERPROFILE%\Downloads\DescargasR 
+:: Tiempo de espera para iniciar
+timeout /t 3 /nobreak
+
+wget -q --no-check-certificate --show-progress --connect-timeout=15 --tries=3 -O "picasa.exe" "URL?download=true"
+start "" "name.ext"</textarea><button onclick="copyText(this)">Copiar</button></div><div class="block"><div class="title">Descarga con detección de nombre de archivo</div><textarea readonly>@echo off
+:: Descargas no directas
+wget -S --content-disposition --no-check-certificate --show-progress --connect-timeout=15 --tries=3 -O "name.ext" "URL"</textarea><button onclick="copyText(this)">Copiar</button></div><div class="block"><div class="title">Descarga directa desde MediaFire (PowerShell)</div><textarea readonly># URL de la página de MediaFire
+$mediafireUrl = "link"
+
+# Nombre del archivo HTML temporal
+$htmlFile = "page.html"
+
+# Nombre del archivo para el enlace de descarga
+$linkFile = "download_link.txt"
+
+# Nombre del archivo de salida
+$outputFile = "name.ext"
+
+# Paso 1: Descargar la página HTML
+Invoke-WebRequest -Uri $mediafireUrl -OutFile $htmlFile
+
+# Paso 2: Leer el contenido del archivo HTML
+$html = Get-Content -Path $htmlFile -Raw
+
+# Paso 3: Patrón para encontrar el enlace de descarga directa
+$pattern = 'https://download[^"\'\']+'
+
+# Paso 4: Buscar el enlace usando expresiones regulares
+$matches = [regex]::Matches($html, $pattern)
+
+if ($matches.Count -gt 0) {
+    # Obtener el primer enlace encontrado
+    $url = $matches[0].Value
+
+    # Paso 5: Guardar el enlace en un archivo de texto
+    Set-Content -Path $linkFile -Value $url
+
+    # Paso 6: Descargar el archivo usando el enlace extraído
+    Invoke-WebRequest -Uri $url -OutFile $outputFile
+
+    Write-Output "Descarga completada: $outputFile"
+} else {
+    Write-Output "No se encontró ningún enlace de descarga."
+}
+
+# Opcional: Limpiar archivos temporales
+Remove-Item -Path $htmlFile, $linkFile</textarea><button onclick="copyText(this)">Copiar</button></div></div><script>function copyText(t){const e=t.previousElementSibling;e.select(),e.setSelectionRange(0,99999);try{navigator.clipboard.writeText(e.value),alert("Texto copiado al portapapeles.")}catch(o){alert("Error al copiar el texto. Intenta nuevamente.")}}</script></body></html>
